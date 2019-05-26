@@ -1,0 +1,38 @@
+{
+  "name": "@itcutives/queue-helper",
+  "version": "1.0.0",
+  "description": "ITcutives Queue helper (Bull, BeeQueue)",
+  "main": "example/index.js",
+  "scripts": {
+    "test": "npx jest",
+    "coverage": "npx jest --coverage",
+    "lint": "npx eslint .",
+    "pretest": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITcutives/queue-helper.git"
+  },
+  "keywords": [
+    "bull",
+    "bee-queue",
+    "queue"
+  ],
+  "author": "Ashish Tilara <ashish@itcutives.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ITcutives/queue-helper/issues"
+  },
+  "homepage": "https://github.com/ITcutives/queue-helper#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.5.0"
+  },
+  "dependencies": {
+    "bee-queue": "^1.2.2",
+    "bull": "^3.8.1",
+    "bunyan": "^1.8.12"
+  }
+}
