@@ -7,7 +7,8 @@
     "test": "npx jest",
     "coverage": "npx jest --coverage",
     "lint": "npx eslint .",
-    "pretest": "npm run lint"
+    "pretest": "npm run lint",
+    "start": "node ./example/index.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,7 @@
   },
   "dependencies": {
     "bee-queue": "^1.2.2",
-    "bull": "^3.8.1",
+    "bull": "^3.10.0",
     "bunyan": "^1.8.12"
   }
 }

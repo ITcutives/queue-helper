@@ -3,6 +3,10 @@ class AbstractQueue {
     return 'AbstractQueue';
   }
 
+  close() {
+    throw new Error('close: not implemented');
+  }
+
   static Process() {
     throw new Error('Process: not implemented');
   }
