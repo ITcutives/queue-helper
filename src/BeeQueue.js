@@ -13,6 +13,11 @@ class BeeQueue extends AbstractQueue {
     }
   }
 
+  close(timeout = 0) {
+    logger.info(`closing ${this.constructor.NAME}`);
+    return this.queue.close(timeout);
+  }
+
   setListeners() {
     this.queue.on('ready', this.ready);
     this.queue.on('error', this.error);

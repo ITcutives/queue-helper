@@ -7,6 +7,18 @@ describe('AbstractQueue', () => {
     });
   });
 
+  describe('close', () => {
+    let abstract;
+
+    beforeEach(() => {
+      abstract = new AbstractQueue();
+    });
+
+    it('should throw error', () => {
+      expect(() => abstract.close()).toThrowError('close: not implemented');
+    });
+  });
+
   describe('static Process', () => {
     it('should throw error', () => {
       expect(() => AbstractQueue.Process()).toThrowError('Process: not implemented');

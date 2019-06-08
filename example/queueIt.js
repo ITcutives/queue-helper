@@ -23,7 +23,7 @@ const o = new Open(config);
   await c.enqueue({ c: 1 });
   // scheduling
   await c.enqueueAt({ c: 2 }, dt);
-  c.queue.close();
+  await c.close();
   console.timeEnd('charge');
 
   console.time('open');
@@ -31,6 +31,6 @@ const o = new Open(config);
   await o.enqueue({ o: 1 });
   // scheduling
   await o.enqueueAt({ o: 2 }, dt);
-  o.queue.close();
+  await o.close();
   console.timeEnd('open');
 })();

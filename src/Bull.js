@@ -13,6 +13,15 @@ class Bull extends AbstractQueue {
     }
   }
 
+  close(timeout = 0) {
+    logger.info(`closing ${this.constructor.NAME}`);
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        resolve(this.queue.close());
+      }, timeout);
+    });
+  }
+
   setListeners() {
     this.queue.on('error', this.error);
     this.queue.on('waiting', this.waiting);

@@ -95,6 +95,30 @@ describe('Bull', () => {
     });
   });
 
+  describe('close', () => {
+    let bee;
+
+    beforeEach(() => {
+      bee = new Bull(config);
+    });
+
+    it('should call .close to close the queue connection', async () => {
+      bee.queue.close.mockResolvedValue(undefined);
+      await bee.close();
+
+      expect(bee.queue.close).toHaveBeenCalled();
+      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+    });
+
+    it('should call .close with timeout provided to close the queue connection', async () => {
+      bee.queue.close.mockResolvedValue(undefined);
+      await bee.close(200);
+
+      expect(bee.queue.close).toHaveBeenCalled();
+      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+    });
+  });
+
   describe('enqueue', () => {
     let bull;
 
