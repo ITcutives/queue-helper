@@ -14,17 +14,17 @@ class BeeQueue extends AbstractQueue {
   }
 
   close(timeout = 0) {
-    logger.info(`closing ${this.constructor.NAME}`);
+    logger.info(`${this.constructor.NAME}: closing`);
     return this.queue.close(timeout);
   }
 
   setListeners() {
-    this.queue.on('ready', this.ready);
-    this.queue.on('error', this.error);
-    this.queue.on('succeeded', this.succeeded);
-    this.queue.on('retrying', this.retrying);
-    this.queue.on('failed', this.failed);
-    this.queue.on('stalled', this.stalled);
+    this.queue.on('ready', this.ready.bind(this));
+    this.queue.on('error', this.error.bind(this));
+    this.queue.on('succeeded', this.succeeded.bind(this));
+    this.queue.on('retrying', this.retrying.bind(this));
+    this.queue.on('failed', this.failed.bind(this));
+    this.queue.on('stalled', this.stalled.bind(this));
   }
 
   setTask(fn) {
@@ -32,39 +32,39 @@ class BeeQueue extends AbstractQueue {
   }
 
   async enqueue(data) {
-    logger.info(`adding to ${this.constructor.NAME}`, data);
+    logger.info(`${this.constructor.NAME}: adding`, data);
     return this.queue.createJob(data).save();
   }
 
   async enqueueAt(data, stamp = Date.now()) {
-    logger.info(`scheduling to ${this.constructor.NAME} to run at ${stamp}`, data);
+    logger.info(`${this.constructor.NAME}: scheduling to run at ${stamp}`, data);
     return this.queue.createJob(data)
       .delayUntil(stamp)
       .save();
   }
 
   ready() {
-    logger.info('queue now ready to start doing things');
+    logger.info(`${this.constructor.NAME}: now ready`);
   }
 
   error(error) {
-    logger.error('error', error);
+    logger.error(`${this.constructor.NAME}: error`, error);
   }
 
   succeeded(job, result) {
-    logger.info('completed', job.id, job.data, result);
+    logger.info(`${this.constructor.NAME}: completed`, job.id, job.data, result);
   }
 
   retrying(job, err) {
-    logger.info(`Job ${job.id} failed with error ${err.message} but is being retried!`);
+    logger.info(`${this.constructor.NAME}: Job ${job.id} failed with error ${err.message} but is being retried!`);
   }
 
   failed(job, err) {
-    logger.error('failed', job.id, err);
+    logger.error(`${this.constructor.NAME}: failed`, job.id, err);
   }
 
   stalled(jobId) {
-    logger.info('stalled', jobId);
+    logger.info(`${this.constructor.NAME}: stalled`, jobId);
   }
 }
 
