@@ -1,5 +1,4 @@
-const Charge = require('./tasks/Charge');
-const Open = require('./tasks/Open');
+const SendMessage = require('./tasks/SendMessage');
 
 const config = {
   redis: {
@@ -10,7 +9,7 @@ const config = {
   },
   removeOnSuccess: true,
   activateDelayedJobs: true,
+  concurrancy: 10,
 };
 
-const c = new Charge(config);
-const o = new Open(config);
+const sendMessage = new SendMessage(config);

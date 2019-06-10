@@ -37,7 +37,7 @@ describe('Bull', () => {
       bull = new Bull(config);
       expect(bull.setListeners).toHaveBeenCalled();
       expect(bull.setTask).not.toHaveBeenCalled();
-      expect(bull.concurrancy).toBe(10);
+      expect(bull.concurrancy).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
@@ -91,7 +91,7 @@ describe('Bull', () => {
       const fn = () => {
       };
       bull.setTask(fn);
-      expect(bull.queue.process).toHaveBeenCalledWith('AbstractQueue', 10, fn);
+      expect(bull.queue.process).toHaveBeenCalledWith('AbstractQueue', 1, fn);
     });
   });
 
@@ -107,7 +107,7 @@ describe('Bull', () => {
       await bee.close();
 
       expect(bee.queue.close).toHaveBeenCalled();
-      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: closing');
     });
 
     it('should call .close with timeout provided to close the queue connection', async () => {
@@ -115,7 +115,7 @@ describe('Bull', () => {
       await bee.close(200);
 
       expect(bee.queue.close).toHaveBeenCalled();
-      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: closing');
     });
   });
 
@@ -129,7 +129,7 @@ describe('Bull', () => {
     it('should call .add to add task to queue', () => {
       bull.enqueue({ a: 1 });
       expect(bull.queue.add).toHaveBeenCalledWith('AbstractQueue', { a: 1 });
-      expect(log.info).toHaveBeenCalledWith('adding to AbstractQueue', { a: 1 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: adding', { a: 1 });
     });
   });
 
@@ -143,7 +143,7 @@ describe('Bull', () => {
     it('should log `error` message', () => {
       const e = new Error('bad error');
       bull.error(e);
-      expect(log.error).toHaveBeenCalledWith('error', e);
+      expect(log.error).toHaveBeenCalledWith('AbstractQueue: error', e);
     });
   });
 
@@ -156,7 +156,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.waiting(1);
-      expect(log.info).toHaveBeenCalledWith('waiting', 1);
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: waiting', 1);
     });
   });
 
@@ -169,7 +169,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.active({ id: 1, data: { a: 11 } });
-      expect(log.info).toHaveBeenCalledWith('active', 1, { a: 11 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: active', 1, { a: 11 });
     });
   });
 
@@ -182,7 +182,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.stalled({ id: 2, data: { a: 22 } });
-      expect(log.info).toHaveBeenCalledWith('stalled', 2, { a: 22 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: stalled', 2, { a: 22 });
     });
   });
 
@@ -195,7 +195,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.completed({ id: 2, data: { a: 22 } }, 'success');
-      expect(log.info).toHaveBeenCalledWith('completed', 2, { a: 22 }, 'success');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: completed', 2, { a: 22 }, 'success');
     });
   });
 
@@ -209,7 +209,7 @@ describe('Bull', () => {
     it('should log `error` message', () => {
       const e = new Error('bad error');
       bull.failed({ id: 2, data: { a: 22 } }, e);
-      expect(log.error).toHaveBeenCalledWith('failed', 2, e);
+      expect(log.error).toHaveBeenCalledWith('AbstractQueue: failed', 2, e);
     });
   });
 
@@ -222,7 +222,7 @@ describe('Bull', () => {
 
     it('should log `warn` message', () => {
       bull.paused();
-      expect(log.warn).toHaveBeenCalledWith('paused');
+      expect(log.warn).toHaveBeenCalledWith('AbstractQueue: paused');
     });
   });
 
@@ -235,7 +235,7 @@ describe('Bull', () => {
 
     it('should log `warn` message', () => {
       bull.resumed({ id: 2, data: { a: 22 } });
-      expect(log.warn).toHaveBeenCalledWith('resumed', 2, { a: 22 });
+      expect(log.warn).toHaveBeenCalledWith('AbstractQueue: resumed', 2, { a: 22 });
     });
   });
 
@@ -248,7 +248,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.cleaned([], 'test');
-      expect(log.info).toHaveBeenCalledWith('cleaned', [], 'test');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: cleaned', [], 'test');
     });
   });
 
@@ -261,7 +261,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.drained();
-      expect(log.info).toHaveBeenCalledWith('drained');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: drained');
     });
   });
 
@@ -274,7 +274,7 @@ describe('Bull', () => {
 
     it('should log `info` message', () => {
       bull.removed({ id: 2, data: { a: 22 } });
-      expect(log.info).toHaveBeenCalledWith('removed', 2, { a: 22 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: removed', 2, { a: 22 });
     });
   });
 });

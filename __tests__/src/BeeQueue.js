@@ -37,7 +37,7 @@ describe('BeeQueue', () => {
       bee = new BeeQueue(config);
       expect(bee.setListeners).toHaveBeenCalled();
       expect(bee.setTask).not.toHaveBeenCalled();
-      expect(bee.concurrancy).toBe(10);
+      expect(bee.concurrancy).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
@@ -86,7 +86,7 @@ describe('BeeQueue', () => {
       const fn = () => {
       };
       bee.setTask(fn);
-      expect(bee.queue.process).toHaveBeenCalledWith(10, fn);
+      expect(bee.queue.process).toHaveBeenCalledWith(1, fn);
     });
   });
 
@@ -102,7 +102,7 @@ describe('BeeQueue', () => {
       await bee.close();
 
       expect(bee.queue.close).toHaveBeenCalledWith(0);
-      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: closing');
     });
 
     it('should call .close with timeout provided to close the queue connection', async () => {
@@ -110,7 +110,7 @@ describe('BeeQueue', () => {
       await bee.close(200);
 
       expect(bee.queue.close).toHaveBeenCalledWith(200);
-      expect(log.info).toHaveBeenCalledWith('closing AbstractQueue');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: closing');
     });
   });
 
@@ -127,7 +127,7 @@ describe('BeeQueue', () => {
       await bee.enqueue({ a: 1 });
 
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
-      expect(log.info).toHaveBeenCalledWith('adding to AbstractQueue', { a: 1 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: adding', { a: 1 });
     });
   });
 
@@ -156,14 +156,14 @@ describe('BeeQueue', () => {
       await bee.enqueueAt({ a: 1 }, dt);
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
       expect(delayUntil).toHaveBeenCalledWith(dt);
-      expect(log.info).toHaveBeenCalledWith(`scheduling to AbstractQueue to run at ${dt}`, { a: 1 });
+      expect(log.info).toHaveBeenCalledWith(`AbstractQueue: scheduling to run at ${dt}`, { a: 1 });
     });
 
     it('should schedule job at now(), if no time provided', async () => {
       await bee.enqueueAt({ a: 1 });
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
       expect(delayUntil).toHaveBeenCalledWith(1558868737679);
-      expect(log.info).toHaveBeenCalledWith('scheduling to AbstractQueue to run at 1558868737679', { a: 1 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: scheduling to run at 1558868737679', { a: 1 });
     });
   });
 
@@ -176,7 +176,7 @@ describe('BeeQueue', () => {
 
     it('should log `info` message', () => {
       bee.ready();
-      expect(log.info).toHaveBeenCalledWith('queue now ready to start doing things');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: now ready');
     });
   });
 
@@ -190,7 +190,7 @@ describe('BeeQueue', () => {
     it('should log `error` message', () => {
       const e = new Error('bad error');
       bee.error(e);
-      expect(log.error).toHaveBeenCalledWith('error', e);
+      expect(log.error).toHaveBeenCalledWith('AbstractQueue: error', e);
     });
   });
   describe('succeeded', () => {
@@ -202,7 +202,7 @@ describe('BeeQueue', () => {
 
     it('should log `info` message', () => {
       bee.succeeded({ id: 2, data: { a: 22 } }, 'success');
-      expect(log.info).toHaveBeenCalledWith('completed', 2, { a: 22 }, 'success');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: completed', 2, { a: 22 }, 'success');
     });
   });
 
@@ -216,7 +216,7 @@ describe('BeeQueue', () => {
     it('should log `info` message', () => {
       const e = new Error('bad error');
       bee.retrying({ id: 1 }, e);
-      expect(log.info).toHaveBeenCalledWith('Job 1 failed with error bad error but is being retried!');
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: Job 1 failed with error bad error but is being retried!');
     });
   });
 
@@ -230,7 +230,7 @@ describe('BeeQueue', () => {
     it('should log `error` message', () => {
       const e = new Error('bad error');
       bee.failed({ id: 2, data: { a: 22 } }, e);
-      expect(log.error).toHaveBeenCalledWith('failed', 2, e);
+      expect(log.error).toHaveBeenCalledWith('AbstractQueue: failed', 2, e);
     });
   });
 
@@ -243,7 +243,7 @@ describe('BeeQueue', () => {
 
     it('should log `info` message', () => {
       bee.stalled(2);
-      expect(log.info).toHaveBeenCalledWith('stalled', 2);
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: stalled', 2);
     });
   });
 });
