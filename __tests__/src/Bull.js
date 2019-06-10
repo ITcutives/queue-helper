@@ -37,7 +37,7 @@ describe('Bull', () => {
       bull = new Bull(config);
       expect(bull.setListeners).toHaveBeenCalled();
       expect(bull.setTask).not.toHaveBeenCalled();
-      expect(bull.concurrancy).toBe(10);
+      expect(bull.concurrancy).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
@@ -91,7 +91,7 @@ describe('Bull', () => {
       const fn = () => {
       };
       bull.setTask(fn);
-      expect(bull.queue.process).toHaveBeenCalledWith('AbstractQueue', 10, fn);
+      expect(bull.queue.process).toHaveBeenCalledWith('AbstractQueue', 1, fn);
     });
   });
 

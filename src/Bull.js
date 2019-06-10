@@ -6,7 +6,7 @@ class Bull extends AbstractQueue {
   constructor(config) {
     super();
     this.queue = new BullQ(this.constructor.NAME, config);
-    this.concurrancy = config.concurrancy || 10;
+    this.concurrancy = config.concurrancy || 1;
     this.setListeners();
     if (config.isWorker !== false) {
       this.setTask(this.constructor.Process);

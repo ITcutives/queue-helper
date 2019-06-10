@@ -1,5 +1,4 @@
-const Charge = require('./tasks/Charge');
-const Open = require('./tasks/Open');
+const SendMessage = require('./tasks/SendMessage');
 
 const config = {
   redis: {
@@ -11,26 +10,16 @@ const config = {
   isWorker: false,
 };
 
-const c = new Charge(config);
-const o = new Open(config);
+const sendMessage = new SendMessage(config);
 
 (async () => {
+  // adding to queue
+  await sendMessage.enqueue({ messageId: 1 });
+
+  // scheduling
   const dt = new Date();
   dt.setSeconds(dt.getSeconds() + 40);
+  await sendMessage.enqueueAt({ messageId: 2 }, dt);
 
-  console.time('charge');
-  // adding to queue
-  await c.enqueue({ c: 1 });
-  // scheduling
-  await c.enqueueAt({ c: 2 }, dt);
-  await c.close();
-  console.timeEnd('charge');
-
-  console.time('open');
-  // adding to queue
-  await o.enqueue({ o: 1 });
-  // scheduling
-  await o.enqueueAt({ o: 2 }, dt);
-  await o.close();
-  console.timeEnd('open');
+  await sendMessage.close();
 })();

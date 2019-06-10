@@ -37,7 +37,7 @@ describe('BeeQueue', () => {
       bee = new BeeQueue(config);
       expect(bee.setListeners).toHaveBeenCalled();
       expect(bee.setTask).not.toHaveBeenCalled();
-      expect(bee.concurrancy).toBe(10);
+      expect(bee.concurrancy).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
@@ -86,7 +86,7 @@ describe('BeeQueue', () => {
       const fn = () => {
       };
       bee.setTask(fn);
-      expect(bee.queue.process).toHaveBeenCalledWith(10, fn);
+      expect(bee.queue.process).toHaveBeenCalledWith(1, fn);
     });
   });
 
