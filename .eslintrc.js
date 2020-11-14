@@ -1,13 +1,13 @@
 module.exports = {
-  'extends': 'airbnb-base',
-  'plugins': [],
-  'env': {
-    'jest': true
+  extends: 'airbnb-base',
+  plugins: [],
+  env: {
+    jest: true,
   },
-  'rules': {
+  rules: {
     'max-len': 0,
     'global-require': 0,
     'import/no-dynamic-require': 0,
     'class-methods-use-this': 0,
-  }
+  },
 };
