@@ -40,9 +40,17 @@ class Bull extends AbstractQueue {
     this.queue.process(this.constructor.NAME, this.concurrancy, fn);
   }
 
-  async enqueue(data) {
-    logger.info(`${this.constructor.NAME}: adding`, data);
-    await this.queue.add(this.constructor.NAME, data);
+  async enqueue(data, jobId) {
+    logger.info(`${this.constructor.NAME}: [${jobId || null}] adding`, data);
+    await this.queue.add(this.constructor.NAME, data, { jobId });
+  }
+
+  async unqueue(jobId) {
+    if (!jobId) {
+      throw new Error('empty jobId');
+    }
+    logger.info(`${this.constructor.NAME}: removing from queue ${jobId}`);
+    return this.queue.removeJobs(jobId);
   }
 
   error(error) {

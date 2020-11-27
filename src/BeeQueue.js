@@ -31,16 +31,32 @@ class BeeQueue extends AbstractQueue {
     this.queue.process(this.concurrancy, fn);
   }
 
-  async enqueue(data) {
-    logger.info(`${this.constructor.NAME}: adding`, data);
-    return this.queue.createJob(data).save();
+  createJob(data, jobId) {
+    const job = this.queue.createJob(data);
+    if (jobId) {
+      job.setId(jobId);
+    }
+    return job;
   }
 
-  async enqueueAt(data, stamp = Date.now()) {
-    logger.info(`${this.constructor.NAME}: scheduling to run at ${stamp}`, data);
-    return this.queue.createJob(data)
+  async enqueue(data, jobId) {
+    logger.info(`${this.constructor.NAME}: [${jobId || null}] adding`, data);
+    return this.createJob(data, jobId).save();
+  }
+
+  async enqueueAt(data, stamp = Date.now(), jobId) {
+    logger.info(`${this.constructor.NAME}: [${jobId || null}] scheduling to run at ${stamp}`, data);
+    return this.createJob(data, jobId)
       .delayUntil(stamp)
       .save();
+  }
+
+  async unqueue(jobId) {
+    if (!jobId) {
+      throw new Error('empty jobId');
+    }
+    logger.info(`${this.constructor.NAME}: removing from queue ${jobId}`);
+    return this.queue.removeJob(jobId);
   }
 
   ready() {

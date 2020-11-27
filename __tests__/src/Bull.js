@@ -128,8 +128,32 @@ describe('Bull', () => {
 
     it('should call .add to add task to queue', () => {
       bull.enqueue({ a: 1 });
-      expect(bull.queue.add).toHaveBeenCalledWith('AbstractQueue', { a: 1 });
-      expect(log.info).toHaveBeenCalledWith('AbstractQueue: adding', { a: 1 });
+      expect(bull.queue.add).toHaveBeenCalledWith('AbstractQueue', { a: 1 }, { jobId: undefined });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: [null] adding', { a: 1 });
+    });
+
+    it('should call .add to add task to queue', () => {
+      bull.enqueue({ a: 1 }, 1001);
+      expect(bull.queue.add).toHaveBeenCalledWith('AbstractQueue', { a: 1 }, { jobId: 1001 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: [1001] adding', { a: 1 });
+    });
+  });
+
+  describe('unqueue', () => {
+    let bull;
+
+    beforeEach(() => {
+      bull = new Bull(config);
+    });
+
+    it('should throw error if jobId is not provided', async () => {
+      expect(() => bull.unqueue()).rejects.toEqual(new Error('empty jobId'));
+    });
+
+    it('should call .removeJobs with jobId to remove task from queue', async () => {
+      await bull.unqueue(1001);
+      expect(bull.queue.removeJobs).toHaveBeenCalledWith(1001);
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: removing from queue 1001');
     });
   });
 

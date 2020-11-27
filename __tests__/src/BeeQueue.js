@@ -114,6 +114,36 @@ describe('BeeQueue', () => {
     });
   });
 
+  describe('createJob', () => {
+    let bee;
+
+    beforeEach(() => {
+      bee = new BeeQueue(config);
+    });
+
+    it('should call .createJob to add task to queue', async () => {
+      const job = {};
+      job.setId = jest.fn();
+      bee.queue.createJob.mockImplementation(() => job);
+
+      bee.createJob({ a: 1 });
+
+      expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
+      expect(job.setId).not.toHaveBeenCalled();
+    });
+
+    it('should call .createJob and setId to add task to queue when jobId is provided', async () => {
+      const job = {};
+      job.setId = jest.fn();
+      bee.queue.createJob.mockImplementation(() => job);
+
+      bee.createJob({ a: 1 }, 1001);
+
+      expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
+      expect(job.setId).toHaveBeenCalledWith(1001);
+    });
+  });
+
   describe('enqueue', () => {
     let bee;
 
@@ -127,7 +157,7 @@ describe('BeeQueue', () => {
       await bee.enqueue({ a: 1 });
 
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
-      expect(log.info).toHaveBeenCalledWith('AbstractQueue: adding', { a: 1 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: [null] adding', { a: 1 });
     });
   });
 
@@ -156,14 +186,31 @@ describe('BeeQueue', () => {
       await bee.enqueueAt({ a: 1 }, dt);
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
       expect(delayUntil).toHaveBeenCalledWith(dt);
-      expect(log.info).toHaveBeenCalledWith(`AbstractQueue: scheduling to run at ${dt}`, { a: 1 });
+      expect(log.info).toHaveBeenCalledWith(`AbstractQueue: [null] scheduling to run at ${dt}`, { a: 1 });
     });
 
     it('should schedule job at now(), if no time provided', async () => {
       await bee.enqueueAt({ a: 1 });
       expect(bee.queue.createJob).toHaveBeenCalledWith({ a: 1 });
       expect(delayUntil).toHaveBeenCalledWith(1558868737679);
-      expect(log.info).toHaveBeenCalledWith('AbstractQueue: scheduling to run at 1558868737679', { a: 1 });
+      expect(log.info).toHaveBeenCalledWith('AbstractQueue: [null] scheduling to run at 1558868737679', { a: 1 });
+    });
+  });
+
+  describe('unqueue', () => {
+    let bee;
+
+    beforeEach(() => {
+      bee = new BeeQueue(config);
+    });
+
+    it('should throw error if jobId is not provided', async () => {
+      expect(() => bee.unqueue()).rejects.toEqual(new Error('empty jobId'));
+    });
+
+    it('should call .removeJob with jobId to remove task from queue', async () => {
+      await bee.unqueue(1001);
+      expect(bee.queue.removeJob).toHaveBeenCalledWith(1001);
     });
   });
 
