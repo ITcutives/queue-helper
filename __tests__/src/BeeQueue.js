@@ -37,16 +37,16 @@ describe('BeeQueue', () => {
       bee = new BeeQueue(config);
       expect(bee.setListeners).toHaveBeenCalled();
       expect(bee.setTask).not.toHaveBeenCalled();
-      expect(bee.concurrancy).toBe(1);
+      expect(bee.concurrency).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
       config.isWorker = true;
-      config.concurrancy = 5;
+      config.concurrency = 5;
       bee = new BeeQueue(config);
       expect(bee.setListeners).toHaveBeenCalled();
       expect(bee.setTask).toHaveBeenCalled();
-      expect(bee.concurrancy).toBe(5);
+      expect(bee.concurrency).toBe(5);
     });
   });
 

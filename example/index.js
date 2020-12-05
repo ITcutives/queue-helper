@@ -9,7 +9,7 @@ const config = {
   },
   removeOnSuccess: true,
   activateDelayedJobs: true,
-  concurrancy: 100,
+  concurrency: 100,
 };
 
 const sendMessage = new SendMessage(config);

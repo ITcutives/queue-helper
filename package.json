@@ -1,6 +1,6 @@
 {
   "name": "@itcutives/queue-helper",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "ITcutives Queue helper (Bull, BeeQueue)",
   "main": "example/index.js",
   "scripts": {
