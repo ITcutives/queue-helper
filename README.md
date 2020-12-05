@@ -99,7 +99,7 @@ const sendMessage = new SendMessage(config);
 
 - `removeOnSuccess`: Enable to have this worker automatically remove its successfully completed jobs from Redis, so as to keep memory usage down.
 - `activateDelayedJobs`: Activate delayed jobs once they've passed their delayUntil timestamp.
-- `concurrancy`: sets the maximum number of simultaneously active jobs for this processor. It defaults to 1.
+- `concurrency`: sets the maximum number of simultaneously active jobs for this processor. It defaults to 1.
 
 ```js
 const SendMessage = require('./tasks/SendMessage');
@@ -113,7 +113,7 @@ const config = {
   },
   removeOnSuccess: true,
   activateDelayedJobs: true,
-  concurrancy: 10,
+  concurrency: 10,
 };
 
 const sendMessage = new SendMessage(config);

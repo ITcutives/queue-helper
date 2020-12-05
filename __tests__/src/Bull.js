@@ -37,16 +37,16 @@ describe('Bull', () => {
       bull = new Bull(config);
       expect(bull.setListeners).toHaveBeenCalled();
       expect(bull.setTask).not.toHaveBeenCalled();
-      expect(bull.concurrancy).toBe(1);
+      expect(bull.concurrency).toBe(1);
     });
 
     it('should call setListeners and setTask when isWorker config is true', () => {
       config.isWorker = true;
-      config.concurrancy = 5;
+      config.concurrency = 5;
       bull = new Bull(config);
       expect(bull.setListeners).toHaveBeenCalled();
       expect(bull.setTask).toHaveBeenCalled();
-      expect(bull.concurrancy).toBe(5);
+      expect(bull.concurrency).toBe(5);
     });
   });
 

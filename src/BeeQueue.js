@@ -6,7 +6,7 @@ class BeeQueue extends AbstractQueue {
   constructor(config) {
     super();
     this.queue = new Bee(this.constructor.NAME, config);
-    this.concurrancy = config.concurrancy || 1;
+    this.concurrency = config.concurrency || 1;
     this.setListeners();
     if (config.isWorker !== false) {
       this.setTask(this.constructor.Process);
@@ -28,7 +28,7 @@ class BeeQueue extends AbstractQueue {
   }
 
   setTask(fn) {
-    this.queue.process(this.concurrancy, fn);
+    this.queue.process(this.concurrency, fn);
   }
 
   createJob(data, jobId) {
