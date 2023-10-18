@@ -44,8 +44,8 @@ class BeeQueue extends AbstractQueue {
     return this.createJob(data, jobId).save();
   }
 
-  async enqueueAt(data, stamp = Date.now(), jobId) {
-    logger.info(`${this.constructor.NAME}: [${jobId || null}] scheduling to run at ${stamp}`, data);
+  async enqueueAt(data, stamp = Date.now(), jobId = null) {
+    logger.info(`${this.constructor.NAME}: [${jobId}] scheduling to run at ${stamp}`, data);
     return this.createJob(data, jobId)
       .delayUntil(stamp)
       .save();
